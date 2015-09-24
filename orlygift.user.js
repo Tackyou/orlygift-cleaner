@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         orlygift - clean
 // @namespace    http://steamcommunity.com/id/tackyou/
-// @version      0.5
+// @version      0.6
 // @description  strip some stuff off the page
 // @author       Tackyou
 // @match        https://www.orlygift.com/
@@ -36,6 +36,8 @@ $('.headline-container').first().remove();
 $('.countdown-container').remove();
 $('.last_claimed').remove();
 $('.row').slice(0,3).remove();
+// remove android app ad
+$('#commander-cool-banner').parent().remove();
 
 // make it a bit smaller
 $('.row.headline-container.wizard').first().css('padding', '5px 0px 0px 0px').find('h3').remove();
