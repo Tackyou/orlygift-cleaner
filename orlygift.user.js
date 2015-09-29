@@ -1,11 +1,16 @@
 // ==UserScript==
-// @name         orlygift - clean
-// @namespace    http://steamcommunity.com/id/tackyou/
-// @version      0.6
-// @description  strip some stuff off the page
-// @author       Tackyou
-// @match        https://www.orlygift.com/
-// @grant        none
+// @name Orlygift.com Cleaner
+// @namespace https://github.com/Tackyou/orlygift-cleaner
+// @description A userscript to clean the orlygift website up
+// @author Tackyou
+// @version 0.7
+// @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
+// @icon http://i.imgur.com/ukYltA1.png
+// @match https://www.orlygift.com/
+// @supportURL https://github.com/Tackyou/orlygift-cleaner/issues
+// @updateURL https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/orlygift.user.js
+// @downloadURL https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/orlygift.user.js
+// @grant none
 // ==/UserScript==
 
 // bypass adblock & steam review
@@ -53,3 +58,4 @@ $('.content-inner .alert.alert-warning').next().nextAll().remove();
 
 // remove all leftover crap
 $('.timeline').css('padding', '0 0 50px').css('margin-left', '0').nextAll().remove();
+$('.alert-success').nextAll().remove();
