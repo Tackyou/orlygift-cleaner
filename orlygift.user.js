@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 0.8
+// @version 0.9
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -13,11 +13,13 @@
 // @grant none
 // ==/UserScript==
 
+console.log('[OrlyCleaner] Initialized');
 // bypass adblock & steam review
 var astop = false, rstop = false, cycle = setInterval(function() {
     if(!rstop && $('.user-blocked').length>0){
         $('.user-blocked').removeClass('user-blocked');
         $('.navbar-brand img').attr('src','http://i.imgur.com/0X4HGnP.png');
+        console.log('[OrlyCleaner] Steam Review Info removed');
         rstop = true;
     }
     if(!astop && $('.sweet-alert').length>0 && $('.sweet-alert').text().indexOf('AdBlocker detected :(') != -1){
@@ -27,6 +29,7 @@ var astop = false, rstop = false, cycle = setInterval(function() {
         $('.sweet-alert').remove();
         $('body').removeClass('stop-scrolling');
         $('.navbar-brand img').attr('src','http://i.imgur.com/HF6LusY.png');
+        console.log('[OrlyCleaner] Adblocker Warning removed');
         astop = true;
     }
     if(rstop && astop){
@@ -34,6 +37,14 @@ var astop = false, rstop = false, cycle = setInterval(function() {
         $('.navbar-brand img').attr('src','http://i.imgur.com/0Ol8yk1.png');
     }
 }, 100);
+
+// automatically accept the new TOS if required, saving you some clicks and time
+if($('input#terms').length>0){
+    $('form.ng-pristine input#terms').prop('checked', true);
+    $('form.ng-pristine input#newsletter').prop('checked', false);
+    $('form.ng-pristine div.col-xs-4 button').trigger('click');
+    console.log('[OrlyCleaner] Orlygift TOS accepted');
+}
 
 // theres some overlay blocking the site sometimes, what ever lets remove it
 $('.modal-backdrop.fade.in').remove();
