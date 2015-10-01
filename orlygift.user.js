@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 0.7
+// @version 0.8
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -34,6 +34,9 @@ var astop = false, rstop = false, cycle = setInterval(function() {
         $('.navbar-brand img').attr('src','http://i.imgur.com/0Ol8yk1.png');
     }
 }, 100);
+
+// theres some overlay blocking the site sometimes, what ever lets remove it
+$('.modal-backdrop.fade.in').remove();
 
 // clean the page
 $('.ad-container').remove();
