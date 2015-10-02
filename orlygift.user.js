@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 0.9
+// @version 1.0
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -13,63 +13,34 @@
 // @grant none
 // ==/UserScript==
 
-console.log('[OrlyCleaner] Initialized');
-// bypass adblock & steam review
-var astop = false, rstop = false, cycle = setInterval(function() {
-    if(!rstop && $('.user-blocked').length>0){
-        $('.user-blocked').removeClass('user-blocked');
-        $('.navbar-brand img').attr('src','http://i.imgur.com/0X4HGnP.png');
-        console.log('[OrlyCleaner] Steam Review Info removed');
-        rstop = true;
-    }
-    if(!astop && $('.sweet-alert').length>0 && $('.sweet-alert').text().indexOf('AdBlocker detected :(') != -1){
-        $('#ad-enabled').show();
-        $('#ad-disabled').hide();
-        $('.sweet-overlay').remove();
-        $('.sweet-alert').remove();
-        $('body').removeClass('stop-scrolling');
-        $('.navbar-brand img').attr('src','http://i.imgur.com/HF6LusY.png');
-        console.log('[OrlyCleaner] Adblocker Warning removed');
-        astop = true;
-    }
-    if(rstop && astop){
-        clearInterval(cycle);
-        $('.navbar-brand img').attr('src','http://i.imgur.com/0Ol8yk1.png');
-    }
-}, 100);
+// start with injecting some new css rules
+var style = document.createElement('style');
+style.appendChild(document.createTextNode('.slider,.row,.countdown-container,.modal-backdrop.fade.in,.ad-container,.headline-container div p,.last_claimed,#commander-cool-banner,.thumb,div.cc_banner-wrapper{display:none}.row.headline-container.animated,.content-perspective .content-inner .row{display:block}.sweet-alert,.sweet-overlay,.content-perspective .content-inner .ng-scope + .row{display:none !important}.headline-container{padding:0}.timeline .content-inner{padding:5px}.timeline .content-inner h3{font-size:16px;margin-top:11px}.timeline .content-perspective{margin-left:30px}.event label.arrow,.event input[type="radio"]{left:-50px}.timeline:before{left:-30px}.container-fluid .container{width:800px}'));
+document.head.appendChild(style);
+
+console.log("[Userscript] OrlyCleaner is active");
 
 // automatically accept the new TOS if required, saving you some clicks and time
 if($('input#terms').length>0){
     $('form.ng-pristine input#terms').prop('checked', true);
     $('form.ng-pristine input#newsletter').prop('checked', false);
     $('form.ng-pristine div.col-xs-4 button').trigger('click');
-    console.log('[OrlyCleaner] Orlygift TOS accepted');
+    console.log('[Userscript] Orlygift TOS accepted');
 }
 
-// theres some overlay blocking the site sometimes, what ever lets remove it
-$('.modal-backdrop.fade.in').remove();
-
-// clean the page
-$('.ad-container').remove();
-$('.headline-container').first().remove();
-$('.countdown-container').remove();
+// cleaning some stuff to prevent loading images in background etc.
+$('.row .countdown-container').remove();
 $('.last_claimed').remove();
-$('.row').slice(0,3).remove();
-// remove android app ad
-$('#commander-cool-banner').parent().remove();
 
-// make it a bit smaller
-$('.row.headline-container.wizard').first().css('padding', '5px 0px 0px 0px').find('h3').remove();
-$('.content-inner').css('padding', '5px');
-$('.content-inner h3').css('font-size', '16px');
-$('.content-inner h3').css('margin-top', '11px');
-$('.thumb').remove();
-
-// for in round
-$('.content-inner .alert.alert-info').nextAll().remove();
-// for not in round
-$('.content-inner .alert.alert-warning').next().nextAll().remove();
-
-// remove all leftover crap
-$('.timeline').css('padding', '0 0 50px').css('margin-left', '0').nextAll().remove();
-$('.alert-success').nextAll().remove();
+// lets make the timer alive and reload automatically on round end
+var timelem = $('div.callout.callout-info strong');
+var fetchtime = timelem.text();
+var mins = +(fetchtime.split(':')[0]), secs = (mins * 60 + (+(fetchtime.split(':')[1].split(' min')[0]))), currentSeconds = 0, currentMinutes = 0;
+setInterval(function() {
+    currentMinutes = Math.floor(secs / 60);
+    currentSeconds = secs % 60;
+    if(currentSeconds <= 9) currentSeconds = '0' + currentSeconds;
+    secs--;
+    timelem.text(currentMinutes + ':' + currentSeconds + ' min');
+    if(secs == -1){ setTimeout(function(){location.reload();}, 5000); }
+}, 1000);
