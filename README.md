@@ -2,7 +2,7 @@
 
 **What will this script do with orlygift.com ?**
 - Bypass their anti-adblock system
-- Make the round time left timer countdown live
+- Make the round time left countdown live
 - Reload site automatically on round end
 - Strip the game trailer, description and informations off the page
 - Remove countdown, last winners, current participants
