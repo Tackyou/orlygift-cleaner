@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 1.0
+// @version 1.1
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -29,18 +29,14 @@ if($('input#terms').length>0){
 }
 
 // cleaning some stuff to prevent loading images in background etc.
-$('.row .countdown-container').remove();
+$('.countdown-container').remove();
 $('.last_claimed').remove();
 
 // lets make the timer alive and reload automatically on round end
 var timelem = $('div.callout.callout-info strong');
 var fetchtime = timelem.text();
 var mins = +(fetchtime.split(':')[0]), secs = (mins * 60 + (+(fetchtime.split(':')[1].split(' min')[0]))), currentSeconds = 0, currentMinutes = 0;
-setInterval(function() {
-    currentMinutes = Math.floor(secs / 60);
-    currentSeconds = secs % 60;
-    if(currentSeconds <= 9) currentSeconds = '0' + currentSeconds;
-    secs--;
-    timelem.text(currentMinutes + ':' + currentSeconds + ' min');
-    if(secs == -1){ setTimeout(function(){location.reload();}, 5000); }
+var count = setInterval(function() {
+    currentMinutes = Math.floor(secs / 60); currentSeconds = secs % 60; if(currentSeconds <= 9) currentSeconds = '0' + currentSeconds; secs--; timelem.text(currentMinutes + ':' + currentSeconds + ' min');
+    if(secs == -1){ clearInterval(count); setTimeout(function(){location.reload();}, 35000); $('.callout.callout-info').empty().html('<h4>New round starting soon, will reload when ready...</h4>'); }
 }, 1000);
