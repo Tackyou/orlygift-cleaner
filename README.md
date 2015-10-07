@@ -9,9 +9,13 @@
 **How to use this script ?**
 
 The easiest way is to get Greasemonkey/Tampermonkey extension for you browser.
+
 Firefox: https://addons.mozilla.org/firefox/addon/greasemonkey/
+
 Chrome: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
+
 Opera: https://addons.opera.com/en/extensions/details/tampermonkey-beta/
+
 After you got the free extension you can install userscripts.
 The easiest way is to head over to https://greasyfork.org/en/scripts/12808-orlygift-com-cleaner and click "Install this script"
 
