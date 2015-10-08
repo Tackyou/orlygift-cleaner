@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 1.3
+// @version 1.4
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -41,6 +41,6 @@ if(timelem.length>0){
     var fetchtime = timelem.text();
     var mins = +(fetchtime.split(':')[0]), secs = (mins * 60 + (+(fetchtime.split(':')[1].split(' min')[0]))), currentSeconds = 0, currentMinutes = 0, count = setInterval(function() {
         currentMinutes = Math.floor(secs / 60); currentSeconds = secs % 60; if(currentSeconds <= 9) currentSeconds = '0' + currentSeconds; secs--; timelem.text(currentMinutes + ':' + currentSeconds + ' min');
-        if(secs == -1){ clearInterval(count); /*setTimeout(function(){location.reload();}, 35000); $('.callout.callout-info').empty().html('<h4>New round starting soon, will reload when ready...</h4>');*/ }
+        if(secs == -1){ clearInterval(count); $('.callout.callout-info').empty().html('<h1 style="margin:0;text-align:center;font-weight:bold"><a href="javascript:location.reload()" style="text-decoration:none">&gt;&gt;&gt; Reload & try again &lt;&lt;&lt;</a></h1>'); }
     }, 1000);
 }
