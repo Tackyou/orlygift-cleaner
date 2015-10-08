@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 1.4
+// @version 1.5
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -33,7 +33,8 @@ $('.countdown-container').remove();
 $('.last_claimed').remove();
 
 // clean finished steps
-$('.event.finished').remove();
+$('.event.finished').slice(0, -1).remove();
+$('.alert.alert-success').nextAll().remove();
 
 // lets make the timer alive and reload automatically on round end
 var timelem = $('div.callout.callout-info strong');
