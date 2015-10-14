@@ -3,7 +3,7 @@
 // @namespace https://github.com/Tackyou/orlygift-cleaner
 // @description A userscript to clean the orlygift website up
 // @author Tackyou
-// @version 1.6
+// @version 1.7
 // @license https://raw.githubusercontent.com/Tackyou/orlygift-cleaner/master/LICENSE
 // @icon http://i.imgur.com/ukYltA1.png
 // @match https://www.orlygift.com/
@@ -13,11 +13,53 @@
 // @grant none
 // ==/UserScript==
 
-// start with injecting some new css rules
+var css = '';
+// cleaning
+css += '.col-md-12 p,'; // "WIN A KEY NOW"-button
+css += '.ad-container,'; // all adcontainers
+css += '.last_claimed,'; // last winners
+css += '.fade,'; // not required
+css += '.thumb,'; // images for the steps
+css += '.row:nth-child(n+4):nth-child(-n+7),'; // description, video, etc
+css += '.timeline ~ div,'; // leftover stuff after the steps
+css += '.alert.alert-success ~ *,';// stuff after last step
+css += '.timeline li:last-child .content-perspective .content-inner>div:last-child,'; // man I struggled 1 hour on this. now it works. guess what? the !important did the trick. programing sucks sometimes. it's always the simple stuff you don't think of. thanks for reading this ;)
+css += '.event.finished:nth-last-child(n+2),'; // finished steps
+css += '.cc_banner-wrapper,'; // cookie information
+css += '.headline-container.animated h3,'; // "Share. Play. Rate."-text
+css += '.col-xs-4:nth-child(n+1):nth-child(odd):nth-child(-n+3),'; // countdown
+css += '.col-xs-4 *:nth-last-child(n+3),'; // countdown
+css += '.col-xs-4 h3'; // countdown
+css += '{display:none !important}';
+
+// hide anti-adblock warning
+css += '.sweet-alert,';
+css += '.sweet-overlay,';
+css += '{display:none !important}';
+
+// resizing
+css += '.timeline .content-inner{padding:5px}';
+css += '.timeline .content-inner h3{font-size:16px;margin-top:11px}';
+css += '.timeline .content-perspective{margin-left:30px}';
+//
+css += '.event label.arrow,';
+css += '.event input[type="radio"]';
+css += '{left:-50px}';
+//
+css += '.timeline:before{left:-30px}';
+//
+css += '.container-fluid .container{width:800px}';
+//
+css += '.headline-container{padding:10px 0 0}';
+// total time left countdown
+css += '#time_left_total_countdown{position:fixed;width:210px;z-index:9999}';
+
+// finally, add the styles
 var style = document.createElement('style');
-style.appendChild(document.createTextNode('.slider,.row,.countdown-container,.modal-backdrop.fade.in,.ad-container,.headline-container div p,.last_claimed,#commander-cool-banner,.thumb,div.cc_banner-wrapper{display:none}.row.headline-container.animated,.content-perspective .content-inner .row{display:block}.sweet-alert,.sweet-overlay,.content-perspective .content-inner div + .row{display:none !important}.headline-container{padding:0}.timeline .content-inner{padding:5px}.timeline .content-inner h3{font-size:16px;margin-top:11px}.timeline .content-perspective{margin-left:30px}.event label.arrow,.event input[type="radio"]{left:-50px}.timeline:before{left:-30px}.container-fluid .container{width:800px}'));
+style.appendChild(document.createTextNode(css));
 document.head.appendChild(style);
 
+// ##################################### divide between styling and functions
 console.log("[Userscript] OrlyCleaner is active");
 
 // automatically accept the new TOS if required, saving you some clicks and time
@@ -28,15 +70,7 @@ if($('input#terms').length>0){
     console.log('[Userscript] Orlygift TOS accepted');
 }
 
-// cleaning some stuff to prevent loading images in background etc.
-$('.countdown-container').remove();
-$('.last_claimed').remove();
-
-// clean finished steps
-if($('.event.finished').length>3){ $('.event.finished').slice(0, -1).remove(); }else{ $('.event.finished').remove(); }
-$('.alert.alert-success').nextAll().remove();
-
-// lets make the timer alive and reload automatically on round end
+// make timeleft countdown live
 var timelem = $('div.callout.callout-info strong');
 if(timelem.length>0){
     var fetchtime = timelem.text();
