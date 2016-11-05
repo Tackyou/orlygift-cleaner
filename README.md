@@ -1,5 +1,7 @@
 # orlygift-cleaner
 
+(this script is no longer maintained)
+
 **What will this script do with orlygift.com ?**
 - Bypass their anti-adblock system
 - Make the round time left countdown live
